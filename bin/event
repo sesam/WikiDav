@@ -1,0 +1,37 @@
+#!/bin/bash
+
+cd "${0%/*}/.."
+echo "$@" >> var/webdav.log
+
+filename="$1"
+
+fileext="${filename##*.}"
+event="$2"
+
+if [ "$event" = "IN_CLOSE_WRITE" -a "$fileext" = "sig" ]; then
+	test -f "$filename" -a -r "$filename" -a -s "$filename" || exit 1
+	sigfile="$filename"
+	filename="${filename%.sig}"
+	test -f "$filename" -a -r "$filename" -a -s "$filename" || exit 1
+	filebasename="${filename##$PWD/%/src/}"
+	if [ "${filebasename##*.}" = "txt" ]; then
+		htmlfile="${PWD}/%/${filebasename%.txt}.html"
+		markdown "$filename" > "$htmlfile"
+		chmod a+r "$htmlfile"
+	fi
+elif [ "$event" = "IN_DELETE" -a "$fileext" = "txt" ]; then
+	filebasename="${filename##$PWD/%/src/}"
+	htmlfile="${PWD}/%/${filebasename%.txt}.html"
+	rm "$filename.sig" "$htmlfile"
+fi
+
+#IN_CLOSE_NOWRITE
+#IN_CLOSE_NOWRITE,IN_ISDIR
+#IN_CLOSE_WRITE
+#IN_CREATE
+#IN_CREATE,IN_ISDIR
+#IN_DELETE
+#IN_DELETE,IN_ISDIR
+#IN_MOVED_TO
+#IN_OPEN
+#IN_OPEN,IN_ISDIR
