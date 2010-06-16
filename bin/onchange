@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ${1%/*}/common
+source "$(dirname "$(readlink -f "$BASH_SOURCE")")/common"
 cd "$BASE_DIR"
 
 log "$@"

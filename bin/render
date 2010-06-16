@@ -1,6 +1,8 @@
 #!/bin/bash
 
-source /home/zash/web/wiki-4/bin/common
+if [ -z "$HTML_DIR" ]; then
+	source "$(dirname "$(readlink -f "$BASH_SOURCE")")/common"
+fi
 
 test $# -eq 1 || exit 1
 faras "$1" && test "${1##*.}" == "txt" || exit 1
