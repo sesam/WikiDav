@@ -1,0 +1,22 @@
+Oh, a Wiki!
+===========
+
+This is a just small wiki that can be edited over [WebDAV](http://en.wikipedia.org/wiki/WebDAV).
+
+Structure
+---------
+
+* **%/** - Public files
+	* **edit/** - WebDAV accesible dir
+		* `index.txt` - Source files in Markdown format
+	* `index.html` - Generated HTML files
+	* **attic/** - Version history will go here
+* **bin/**
+	* **`common`** - Common functions
+	* **`onchange`** - Invoked by `incron` when a file is changed
+	* **`render`** - Runns text files through markdown
+* **etc/**
+	* `incrontab` - `incron` table
+	* `passwd` - Contains user database
+* **var/** - Log files here
+

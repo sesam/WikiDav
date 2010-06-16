@@ -1,0 +1,36 @@
+#!/bin/bash
+
+source /home/zash/web/wiki-4/bin/common
+
+test $# -eq 1 || exit 1
+faras "$1" && test "${1##*.}" == "txt" || exit 1
+htmlfile="$HTML_DIR${1#$EDIT_DIR}"
+htmlfile="${htmlfile%.txt}.html"
+
+log "rendering $1 into $htmlfile"
+cat > "$htmlfile.$$" <<.
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>$(grep "^==*$" -B 1 "$1" | head -n 1) - WikiDav</title>
+    <meta charset="utf-8">
+    <link href="http://zash.se/css/sass/master.css" rel="stylesheet" type="text/css">
+  </head>
+  <body class="with-bg">
+    <div id="rootcontainer">
+      <header>
+        <hgroup><h1 class="zashlogo"><span>Zash.se</span></h1><h2>Wiki</h2></hgroup>
+      </header>
+      <div class="wiki-page" id="content">
+        <article>$(markdown "$1")</article>
+      </div>
+      <footer>
+        &nbsp;
+        <!-- duno what to have here -->
+      </footer>
+    </div>
+  </body>
+</html>
+.
+chmod a+r "$htmlfile.$$"
+mv "$htmlfile.$$" "$htmlfile"

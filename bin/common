@@ -1,0 +1,50 @@
+#!/bin/bash
+
+export BASE_DIR="."
+export HTML_DIR="$BASE_DIR/%"
+export EDIT_DIR="$HTML_DIR/edit"
+export BACKUP_DIR="$HTML_DIR/attic"
+export LOG_DIR="$HTML_DIR/var"
+PATH="$BASE_DIR/bin:$PATH"
+
+log() {
+	echo $(date +%T) "$@" >> "$LOG_DIR/$(date +%F).log"
+}
+
+ziplogs() {
+batch <<.
+find "$LOG_DIR" -type f ! -name "$(date +%F).log" -print0 |
+xargs -0 -n 1 -P 2 gzip > /dev/null 2>&1
+.
+}
+
+faras() {
+	test -f "$1" -a -r "$1" -a -s "$1"
+	return $?
+}
+
+backup() {
+	target_date="$(date -r "$1" +%F/%T)"
+	target_base="${1##*/}"
+	target_dir="$BACKUP_DIR/${target_base%.txt}"
+	latest="$target_dir/latest.txt"
+	target="$target_dir/$target_date.txt"
+	mkdir -p "$(dirname "$target")"
+	patch="$target_dir/$target_date.patch"
+	if [ -e "$latest" ]; then
+		diff -u "$latest" "$1" | tee "$patch" | patch "$latest"
+		log "target:$target"
+		log "latest:$latest"
+		log "patch:$patch"
+		if [ -s "$patch" ]; then
+			log "patch non-empty"
+			cp "$latest" "$target"
+		else
+			log "patch empty"
+			rm "$patch" "$target"
+		fi
+	else
+		cp "$1" "$target"
+		cp "$target" "$latest"
+	fi
+}

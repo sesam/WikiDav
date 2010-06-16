@@ -1,0 +1,23 @@
+#!/bin/bash
+
+source ${1%/*}/common
+cd "$BASE_DIR"
+
+log "$@"
+
+case "$2" in
+	IN_CLOSE_WRITE)
+	# Argument is a readable plain text file
+	faras "$1" && test "${1##*.}" == "txt" || exit 1
+	backup "$1"
+	render "$1"
+	;;
+
+	IN_DELETE)
+	log "$1 was deleted"
+	htmlfile="$HTML_DIR${1#$EDIT_DIR}"
+	htmlfile="${htmlfile%.txt}.html"
+	log "deleting $htmlfile"
+	rm "$htmlfile"
+	;;
+esac
