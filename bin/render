@@ -15,6 +15,7 @@ cat > "$htmlfile.$$" <<.
 <meta charset="utf-8">
 <title>$(grep "^==*$" -B 1 "$1" | head -n 1) - WikiDav</title>
 <link href="http://zash.se/css/sass/master.css" rel="stylesheet" type="text/css">
+<base href="http://wiki.zash.se/">
 </head>
 <body class="with-bg">
 <div id="rootcontainer">
