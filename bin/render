@@ -18,7 +18,7 @@ cat > "$htmlfile.$$" <<.
 <head>
 <meta charset="utf-8">
 <title>$title - WikiDav</title>
-<link href="http://zash.se/css/sass/master.css" rel="stylesheet" type="text/css">
+<link href="stylesheets/master.css" rel="stylesheet" type="text/css">
 <base href="http://wiki.zash.se/">
 </head>
 <body class="with-bg">
