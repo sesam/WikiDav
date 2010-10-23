@@ -1,0 +1,19 @@
+#!/bin/bash
+
+cat <<.
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>$2 - WikiDav</title>
+<link href="stylesheets/master.css" rel="stylesheet" type="text/css">
+<base href="http://wiki.zash.se/">
+</head>
+<body class="with-bg">
+<div id="rootcontainer">
+<header><hgroup><h1 class="zashlogo"><span>Zash.se</span></h1><h2>Wiki</h2></hgroup></header>
+<div class="wiki-page" id="content">$(cat "$1")</div>
+</div>
+</body>
+</html>
+.
