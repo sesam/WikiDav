@@ -7,6 +7,9 @@ faras "$1" && test "${1##*.}" == "txt" || exit 1
 htmlfile="$HTML_DIR${1#$EDIT_DIR}"
 htmlfile="${htmlfile%.txt}.html"
 title="$(grep "^==*$" -B 1 "$1" | head -n 1)"
+if [ -z "$title" ]; then # try the other h1 style
+	title="$(sed -r 's/^#([^#]*)#*$/\1/;T crap;s/^\s*|\s*$//g;q;:crap;d' "$1")"
+fi
 if [ -z "$title" ]; then
 	title="$(basename "$htmlfile" .html)"
 fi
