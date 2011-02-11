@@ -10,4 +10,7 @@ WikiDav is a minimalistic wiki based on WebDAV, incron and markdown.
 This project is in use at <http://wiki.zash.se/>
 
 ## Installation
-* apt-get install markdown lighttpd
+1. apt-get install markdown incron lighttpd
+2. set up lighttpd using etc/lighttpd-webdav.conf (or roll your own for any other webserver)
+2. set up incron using etc/incrontab [learn moar](http://www.pablumfication.co.uk/2010/09/23/incron-file-system-event-monitoring/)
+3. profit?
